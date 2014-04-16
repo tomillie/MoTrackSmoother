@@ -66,14 +66,30 @@
                       <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="playRadioButton2" min="-2" max="-2" attributes="0"/>
-                          <Component id="playRadioButton1" min="-2" max="-2" attributes="0"/>
-                          <Component id="playRadioButton3" min="-2" max="-2" attributes="0"/>
-                          <Component id="playRadioButton4" alignment="0" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="playRadioButton2" min="-2" max="-2" attributes="0"/>
+                                  <Component id="playRadioButton1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="playRadioButton3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="playButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="stopButton" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="playerSlider" min="-2" pref="241" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="firstFrameLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="lastFrameLabel" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="currentFrameLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Component id="playRadioButton4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="setStartButton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="setEndButton" min="-2" max="-2" attributes="0"/>
@@ -83,20 +99,6 @@
                               <Component id="fromToLabel" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="endLabel" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="playButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="stopButton" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="currentFrameLabel" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="lastFrameLabel" min="-2" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Component id="playerSlider" min="-2" pref="241" max="-2" attributes="0"/>
-                              </Group>
                           </Group>
                       </Group>
                   </Group>
@@ -114,38 +116,38 @@
                   <Component id="graphsScrollPane" pref="0" max="32767" attributes="0"/>
                   <Component id="playerPanel" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="playerSlider" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="noiseField" alignment="1" min="-2" pref="35" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="currentFrameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lastFrameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="exportButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="filterButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                                  <Component id="importButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="stopButton" alignment="3" max="32767" attributes="0"/>
-                                  <Component id="playButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="noiseLabel" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="setEndButton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
-                          <Component id="setStartButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="startLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="fromToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="endLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="hintLabel" min="-2" max="-2" attributes="0"/>
+                          <Component id="progressBar" alignment="0" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="25" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="stopButton" alignment="3" max="32767" attributes="0"/>
+                                  <Component id="playButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="playRadioButton1" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -154,29 +156,32 @@
                               <Component id="playRadioButton2" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="playRadioButton3" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="playRadioButton4" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="noiseField" alignment="1" min="-2" pref="35" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="exportButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                                          <Component id="filterButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                                          <Component id="importButton" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
-                                  <Component id="noiseLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="firstFrameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="lastFrameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="hintLabel" min="-2" max="-2" attributes="0"/>
-                                  <Component id="progressBar" alignment="0" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="playerSlider" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="currentFrameLabel" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                              <Component id="setEndButton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                              <Component id="startLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fromToLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="endLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="setStartButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="playRadioButton4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -631,6 +636,9 @@
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="Original motion"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="playRadioButton1StateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JRadioButton" name="playRadioButton2">
       <Properties>
@@ -640,6 +648,9 @@
         <Property name="text" type="java.lang.String" value="Filtered motion"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="playRadioButton2StateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="playButton">
       <Properties>
@@ -735,6 +746,9 @@
     </Component>
     <Component class="javax.swing.JLabel" name="currentFrameLabel">
       <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="11" style="1"/>
+        </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
           <Connection code="String.valueOf(currentFrame)" type="code"/>
         </Property>
@@ -774,6 +788,9 @@
         <Property name="text" type="java.lang.String" value="Selected submotion"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="playRadioButton3StateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="startLabel">
       <Properties>
@@ -805,6 +822,9 @@
         <Property name="text" type="java.lang.String" value="Filtered submotion"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="playRadioButton4StateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="noiseLabel">
       <Properties>
@@ -821,6 +841,11 @@
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[59, 35]"/>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="firstFrameLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="0"/>
       </Properties>
     </Component>
   </SubComponents>

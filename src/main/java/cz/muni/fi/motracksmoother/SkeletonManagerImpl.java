@@ -272,66 +272,68 @@ public class SkeletonManagerImpl implements SkeletonManager {
         TreeMap<JointType, ArrayList<Float>> yPositionsMapTemp = new TreeMap<JointType, ArrayList<Float>>();
         TreeMap<JointType, ArrayList<Float>> zPositionsMapTemp = new TreeMap<JointType, ArrayList<Float>>();
 
-        Integer framesTemp = null;
-        int numberOfJointTypes = 0;
+        Integer framesTemp = 0;
 
         skeleton.setName(file.getName());
 
         BufferedReader br = null;
         String line = "";
         String splitBy = "\",\"";
+        int i = 0;
+
+        // initialize temporary maps
+        for (JointType jointType : JointType.values()) {
+            xPositionsMapTemp.put(jointType, new ArrayList<Float>());
+            yPositionsMapTemp.put(jointType, new ArrayList<Float>());
+            zPositionsMapTemp.put(jointType, new ArrayList<Float>());
+        }
 
         try {
 
             br = new BufferedReader(new FileReader(file));
             while ((line = br.readLine()) != null) {
 
-                numberOfJointTypes++;
-                JointType jointType = null;
-                ArrayList<Float> xPositionsTemp = new ArrayList<Float>();
-                ArrayList<Float> yPositionsTemp = new ArrayList<Float>();
-                ArrayList<Float> zPositionsTemp = new ArrayList<Float>();
+                if (!line.startsWith("Head")) {
 
-                String[] positions = line.split(splitBy);
-                String[] jointTypeAndFirstPosition = positions[0].split(",\"");
-                jointType = JointType.valueOf(jointTypeAndFirstPosition[0].toUpperCase());
-                positions[0] = jointTypeAndFirstPosition[1];
+                    // counts number of frames
+                    framesTemp++;
 
-                if (framesTemp != null) {
-                    if (framesTemp != positions.length / 3) {
-                        throw new InvalidFileSyntaxException("Number of frames does not same for every joint type.");
+                    // removes first and last double quotes in the line
+                    if (!line.isEmpty()) {
+                        line = line.substring(1, line.length() - 1);
                     }
-                }
-                framesTemp = positions.length / 3;
 
-                for (int i = 0; i < positions.length; i += 3) {
+                    String[] positions = line.split(splitBy);
 
-                    NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
-                    Number number;
+                    i = 0;
+                    for (JointType jointType : JointType.values()) {
 
-                    for (int j = 0; j < 3; j++) {
+                        NumberFormat format = NumberFormat.getInstance(Locale.FRANCE);
+                        Number number;
 
-                        number = format.parse(positions[i + j]);
-                        Float value = number.floatValue();
-                        switch (j) {
-                            case 0:
-                                xPositionsTemp.add(value);
-                                break;
-                            case 1:
-                                yPositionsTemp.add(value);
-                                break;
-                            case 2:
-                                zPositionsTemp.add(value);
-                                break;
+                        for (int j = 0; j < 3; j++) {
+
+                            number = format.parse(positions[i]);
+                            Float value = number.floatValue();
+                            switch (j) {
+                                case 0:
+                                    xPositionsMapTemp.get(jointType).add(value);
+                                    break;
+                                case 1:
+                                    yPositionsMapTemp.get(jointType).add(value);
+                                    break;
+                                case 2:
+                                    zPositionsMapTemp.get(jointType).add(value);
+                                    break;
+                            }
+
+                            i++;
+
                         }
 
                     }
 
                 }
-
-                xPositionsMapTemp.put(jointType, xPositionsTemp);
-                yPositionsMapTemp.put(jointType, yPositionsTemp);
-                zPositionsMapTemp.put(jointType, zPositionsTemp);
 
             }
 
@@ -344,7 +346,7 @@ public class SkeletonManagerImpl implements SkeletonManager {
         } finally {
             if (br != null) {
                 try {
-                    if (numberOfJointTypes != JointType.values().length) {
+                    if (i != JointType.values().length * 3) {
                         throw new InvalidFileSyntaxException("There are some missing joint type(s).");
                     }
                     br.close();
@@ -395,9 +397,10 @@ public class SkeletonManagerImpl implements SkeletonManager {
             jointTypeWithCamelCase = misc.jointTypeToCamelCase(jointType);
             jsonContent += "{\"jointType\":\"" + jointTypeWithCamelCase + "\",\"position\":[";
 
+            int k = 1;
             for (int j = start; j < end; j++) {
 
-                jsonContent += "{\"frame\":\"" + (j + 1) + "\","
+                jsonContent += "{\"frame\":\"" + k + "\","
                         + "\"x\":\"" + ((filteredMotion)
                         ? skeleton.getxPositionsCleaned().get(jointType).get(j).toString().replace(".", ",")
                         : skeleton.getxPositions().get(jointType).get(j).toString().replace(".", ",")) + "\","
@@ -411,6 +414,8 @@ public class SkeletonManagerImpl implements SkeletonManager {
                 if (j != end - 1) {
                     jsonContent += ",";
                 }
+
+                k++;
 
             }
 
@@ -448,9 +453,10 @@ public class SkeletonManagerImpl implements SkeletonManager {
             jointTypeWithCamelCase = misc.jointTypeToCamelCase(jointType);
             xmlContent += "<joint><type>" + jointTypeWithCamelCase + "</type><positions>";
 
+            int k = 1;
             for (int j = start; j < end; j++) {
                 xmlContent += "<position>"
-                        + "<frame>" + (j + 1) + "</frame>"
+                        + "<frame>" + k + "</frame>"
                         + "<x>" + ((filteredMotion)
                         ? skeleton.getxPositionsCleaned().get(jointType).get(j).toString().replace(".", ",")
                         : skeleton.getxPositions().get(jointType).get(j).toString().replace(".", ",")) + "</x>"
@@ -461,6 +467,8 @@ public class SkeletonManagerImpl implements SkeletonManager {
                         ? skeleton.getzPositionsCleaned().get(jointType).get(j).toString().replace(".", ",")
                         : skeleton.getzPositions().get(jointType).get(j).toString().replace(".", ",")) + "</z>"
                         + "</position>";
+
+                k++;
             }
             xmlContent += "</positions></joint>";
         }
@@ -484,12 +492,28 @@ public class SkeletonManagerImpl implements SkeletonManager {
 
         String csvContent = "";
 
+        int k = 0;
         for (JointType jointType : JointType.values()) {
 
             jointTypeWithCamelCase = misc.jointTypeToCamelCase(jointType);
-            csvContent += jointTypeWithCamelCase + ",";
+            for (int i = 0; i < 3; i++) {
+                csvContent += jointTypeWithCamelCase;
 
-            for (int j = start; j < end; j++) {
+                if (k != (JointType.values().length - 1) || i != 2) {
+                    csvContent += ",";
+                } else {
+                    csvContent += "\n";
+                }
+            }
+
+            k++;
+
+        }
+
+        for (int j = start; j < end; j++) {
+
+            k = 0;
+            for (JointType jointType : JointType.values()) {
 
                 csvContent += "\"" + ((filteredMotion)
                         ? skeleton.getxPositionsCleaned().get(jointType).get(j).toString().replace(".", ",")
@@ -501,13 +525,15 @@ public class SkeletonManagerImpl implements SkeletonManager {
                         ? skeleton.getzPositionsCleaned().get(jointType).get(j).toString().replace(".", ",")
                         : skeleton.getzPositions().get(jointType).get(j).toString().replace(".", ",")) + "\"";
 
-                if (j != end - 1) {
+                if (k != (JointType.values().length - 1)) {
                     csvContent += ",";
+                } else {
+                    csvContent += "\n";
                 }
 
-            }
+                k++;
 
-            csvContent += "\n";
+            }
 
         }
 

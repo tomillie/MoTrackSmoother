@@ -44,7 +44,8 @@ import javax.vecmath.Vector3f;
  * Main window of application.
  * 
  * @author Tomas Smetanka
- * @version 1.0 31.03.2014
+ * @version 1.1
+ * @since 1.0
  */
 public class MoTrackSmoother extends javax.swing.JFrame {
 
@@ -117,7 +118,6 @@ public class MoTrackSmoother extends javax.swing.JFrame {
     JFreeChart chartFootLeft = ChartFactory.createXYLineChart("Left foot joint positions", "", "", datasetFootLeft, PlotOrientation.VERTICAL, false, false, false);
     ArrayList<JFreeChart> charts = new ArrayList<JFreeChart>();
 
-    /** Creates new form df */
     public MoTrackSmoother() {
 
         initComponents();
@@ -129,7 +129,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         ToolTipManager.sharedInstance().setInitialDelay(0);
         // sets tooltip time to dismiss to 1 minute
         ToolTipManager.sharedInstance().setDismissDelay(60000);
-
+        // adds content filter to noiseField
         PlainDocument doc = (PlainDocument) noiseField.getDocument();
         doc.setDocumentFilter(new NoiseFieldFilter());
 
@@ -190,6 +190,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         playRadioButton4 = new javax.swing.JRadioButton();
         noiseLabel = new javax.swing.JLabel();
         noiseField = new javax.swing.JTextField();
+        firstFrameLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("MoTrack Smoother");
@@ -532,10 +533,20 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         buttonGroup1.add(playRadioButton1);
         playRadioButton1.setSelected(true);
         playRadioButton1.setText("Original motion");
+        playRadioButton1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playRadioButton1StateChanged(evt);
+            }
+        });
 
         buttonGroup1.add(playRadioButton2);
         playRadioButton2.setText("Filtered motion");
         playRadioButton2.setEnabled(false);
+        playRadioButton2.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playRadioButton2StateChanged(evt);
+            }
+        });
 
         playButton.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         playButton.setText("►");
@@ -605,6 +616,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
 
         progressBar.setIndeterminate(true);
 
+        currentFrameLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         currentFrameLabel.setText(String.valueOf(currentFrame));
 
         lastFrameLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
@@ -629,6 +641,11 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         buttonGroup1.add(playRadioButton3);
         playRadioButton3.setText("Selected submotion");
         playRadioButton3.setEnabled(false);
+        playRadioButton3.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playRadioButton3StateChanged(evt);
+            }
+        });
 
         startLabel.setText(String.valueOf(startFrameToCut));
         startLabel.setEnabled(false);
@@ -642,6 +659,11 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         buttonGroup1.add(playRadioButton4);
         playRadioButton4.setText("Filtered submotion");
         playRadioButton4.setEnabled(false);
+        playRadioButton4.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                playRadioButton4StateChanged(evt);
+            }
+        });
 
         noiseLabel.setText("Measurement noise: ");
         noiseLabel.setToolTipText("Number between 0 and 1, representing noise or discrepancy captured during motion recording. The value is used as measurement noise covariance and is assumed as a constant.");
@@ -651,6 +673,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         noiseField.setText("0.001");
         noiseField.setEnabled(false);
         noiseField.setPreferredSize(new java.awt.Dimension(59, 35));
+
+        firstFrameLabel.setText("0");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -681,13 +705,26 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(playRadioButton2)
-                            .addComponent(playRadioButton1)
-                            .addComponent(playRadioButton3)
-                            .addComponent(playRadioButton4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(playRadioButton2)
+                                    .addComponent(playRadioButton1)
+                                    .addComponent(playRadioButton3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(playButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(playerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(firstFrameLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lastFrameLabel))
+                                    .addComponent(currentFrameLabel)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(playRadioButton4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(setStartButton)
                                 .addGap(18, 18, 18)
                                 .addComponent(setEndButton)
@@ -696,18 +733,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(fromToLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(endLabel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(playButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(stopButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addComponent(currentFrameLabel)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lastFrameLabel))
-                                    .addComponent(playerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(endLabel))))
                     .addComponent(playerPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
@@ -718,31 +744,31 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(graphsScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(playerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(noiseField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(filterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(importButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(noiseLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hintLabel)
+                            .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(playerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(1, 1, 1)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(currentFrameLabel)
-                                    .addComponent(lastFrameLabel)))
-                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(stopButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(playButton))
-                                .addGap(11, 11, 11)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(setEndButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(setStartButton)
-                            .addComponent(startLabel)
-                            .addComponent(fromToLabel)
-                            .addComponent(endLabel))
-                        .addContainerGap(25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(36, 36, 36))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(playRadioButton1)
                                     .addComponent(jLabel1))
@@ -750,22 +776,26 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                                 .addComponent(playRadioButton2)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(playRadioButton3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(playRadioButton4))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(noiseField, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                            .addComponent(exportButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(filterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(importButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(noiseLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(firstFrameLabel)
+                                    .addComponent(lastFrameLabel))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(hintLabel)
-                                    .addComponent(progressBar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                                .addComponent(playerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(currentFrameLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(setEndButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(startLabel)
+                                .addComponent(fromToLabel)
+                                .addComponent(endLabel))
+                            .addComponent(setStartButton)
+                            .addComponent(playRadioButton4))
+                        .addGap(23, 23, 23))))
         );
 
         pack();
@@ -775,6 +805,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Handles all actions related to file import.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void importHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_importHandler
 
@@ -798,7 +830,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                 SwingWorker<Void, Void> swingWorker = new SwingWorker<Void, Void>() {
                     @Override
                     protected Void doInBackground() throws Exception {
-
+                        
                         // cleares all attributes
                         misc.clearAttributes(mainSkeleton);
 
@@ -914,7 +946,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                             progressBar.setVisible(false);
                             playButton.setEnabled(true);
                             playerSlider.setEnabled(true);
-                            playerSlider.setMaximum(numberOfFrames - 1);
+                            playerSlider.setMinimum(0);
+                            playerSlider.setMaximum(numberOfFrames);
                             lastFrameLabel.setText(String.valueOf(numberOfFrames));
                             currentFrame = 0;
                             setStartButton.setEnabled(true);
@@ -922,8 +955,11 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                             filterButton.setEnabled(true);
                             startFrameToCut = 0;
                             endFrameToCut = 0;
+                            endFrameToPlay = numberOfFrames;
                             startLabel.setText("0");
                             endLabel.setText("0");
+                            firstFrameLabel.setText("0");
+                            lastFrameLabel.setText(String.valueOf(numberOfFrames));
 
                             noiseLabel.setEnabled(true);
                             noiseField.setEnabled(true);
@@ -941,7 +977,6 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                     }
                 };
                 swingWorker.execute();
-
             } else {
                 hintLabel.setForeground(new Color(182, 17, 17));
                 hintLabel.setText("The imported file must be one of these types: .JSON, .XML, .CSV");
@@ -956,43 +991,12 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Handles all actions related to motion player.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void playButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_playButtonMouseClicked
 
         if (playButton.isEnabled()) {
-
-            if (playRadioButton1.isSelected()) {
-                
-                playerSlider.setMinimum(0);
-                playerSlider.setMaximum(numberOfFrames);
-                endFrameToPlay = numberOfFrames;
-                lastFrameLabel.setText(String.valueOf(numberOfFrames));
-                
-            } else if (playRadioButton2.isSelected()) {
-                
-                playerSlider.setMinimum(0);
-                playerSlider.setMaximum(numberOfFrames);
-                endFrameToPlay = numberOfFrames;
-                lastFrameLabel.setText(String.valueOf(numberOfFrames));
-                
-            } else if (playRadioButton3.isSelected()) {
-                
-                playerSlider.setMinimum(startFrameToCut);
-                playerSlider.setMaximum(endFrameToCut);
-                currentFrame = startFrameToCut;
-                endFrameToPlay = endFrameToCut;
-                lastFrameLabel.setText(String.valueOf(endFrameToCut));
-                
-            } else if (playRadioButton4.isSelected()) {
-                
-                playerSlider.setMinimum(startFrameToCut);
-                playerSlider.setMaximum(endFrameToCut);
-                currentFrame = startFrameToCut;
-                endFrameToPlay = endFrameToCut;
-                lastFrameLabel.setText(String.valueOf(endFrameToCut));
-                
-            }
-
 
             if (isPlaying) {
                 stopPlayer();
@@ -1046,9 +1050,17 @@ public class MoTrackSmoother extends javax.swing.JFrame {
         noiseLabel.setEnabled(true);
         noiseField.setEnabled(true);
 
-        if (currentFrame == numberOfFrames) {
-            currentFrame = 0;
-            playerSlider.setValue(0);
+        if (currentFrame == endFrameToPlay) {
+
+            // checks if submotion is selected and sets correct start frame
+            if (playRadioButton3.isSelected() || playRadioButton4.isSelected()) {
+                currentFrame = startFrameToCut;
+                playerSlider.setValue(startFrameToCut);
+            } else {
+                currentFrame = 0;
+                playerSlider.setValue(0);
+            }
+
             drawSkeleton();
         }
 
@@ -1083,8 +1095,13 @@ public class MoTrackSmoother extends javax.swing.JFrame {
 
         if (stopButton.isEnabled()) {
             isPlaying = false;
-            currentFrame = 0;
-            playerSlider.setValue(0);
+            if (playRadioButton1.isSelected() || playRadioButton2.isSelected()) {
+                currentFrame = 0;
+                playerSlider.setValue(0);
+            } else {
+                currentFrame = startFrameToCut;
+                playerSlider.setValue(startFrameToCut);
+            }
             stopButton.setEnabled(false);
             drawSkeleton();
             importButton.setEnabled(true);
@@ -1100,6 +1117,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Repaints skeleton in motion player if window is minimized.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         canvas.repaint();
@@ -1109,6 +1128,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Repaints skeleton in motion player if window is dragged out of the screen.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void formWindowStateChanged(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowStateChanged
         canvas.repaint();
@@ -1171,6 +1192,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Handles all actions related to filtering.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void filterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_filterButtonMouseClicked
 
@@ -1226,6 +1249,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Handles all actions related to file export.
      * 
      * @param evt 
+     * @version 1.0
+     * @since 1.0
      */
     private void exportHandler(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exportHandler
 
@@ -1253,7 +1278,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
                     protected Void doInBackground() throws Exception {
 
                         hintLabel.setText("Creating a file . . .");
-                        
+
                         // writing to the file
                         if (playRadioButton1.isSelected()) {
                             skeletonManager.createOutput(mainSkeleton, fileToSave, false, 0, mainSkeleton.getFrames());
@@ -1286,9 +1311,93 @@ public class MoTrackSmoother extends javax.swing.JFrame {
 
     }//GEN-LAST:event_exportHandler
 
+    private void playRadioButton1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playRadioButton1StateChanged
+
+        if (playRadioButton1.isSelected()) {
+            playTypeChange(true, true);
+        }
+
+    }//GEN-LAST:event_playRadioButton1StateChanged
+
+    private void playRadioButton2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playRadioButton2StateChanged
+
+        if (playRadioButton2.isSelected()) {
+            playTypeChange(false, true);
+        }
+
+    }//GEN-LAST:event_playRadioButton2StateChanged
+
+    private void playRadioButton3StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playRadioButton3StateChanged
+
+        if (playRadioButton3.isSelected()) {
+            playTypeChange(true, false);
+        }
+
+    }//GEN-LAST:event_playRadioButton3StateChanged
+
+    private void playRadioButton4StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_playRadioButton4StateChanged
+
+        if (playRadioButton4.isSelected()) {
+            playTypeChange(false, false);
+        }
+
+    }//GEN-LAST:event_playRadioButton4StateChanged
+
+    /**
+     * Sets label values and radio button states related to motion player.
+     * 
+     * @param original is true if no filtered motion is selected
+     * @param uncut is true if no submotion is selected
+     * @version 1.0
+     * @since 1.0
+     */
+    private void playTypeChange(boolean original, boolean uncut) {
+
+        if (original && uncut) {
+
+            playerSlider.setMinimum(0);
+            playerSlider.setMaximum(numberOfFrames);
+            endFrameToPlay = numberOfFrames;
+            firstFrameLabel.setText("0");
+            lastFrameLabel.setText(String.valueOf(numberOfFrames));
+
+        } else if (!original && uncut) {
+
+            playerSlider.setMinimum(0);
+            playerSlider.setMaximum(numberOfFrames);
+            endFrameToPlay = numberOfFrames;
+            firstFrameLabel.setText("0");
+            lastFrameLabel.setText(String.valueOf(numberOfFrames));
+
+        } else if (original && !uncut) {
+
+            playerSlider.setMinimum(startFrameToCut);
+            playerSlider.setMaximum(endFrameToCut);
+            playerSlider.setValue(startFrameToCut);
+            currentFrame = startFrameToCut;
+            endFrameToPlay = endFrameToCut;
+            firstFrameLabel.setText(String.valueOf(startFrameToCut));
+            lastFrameLabel.setText(String.valueOf(endFrameToCut));
+
+        } else if (!original && !uncut) {
+
+            playerSlider.setMinimum(startFrameToCut);
+            playerSlider.setMaximum(endFrameToCut);
+            playerSlider.setValue(startFrameToCut);
+            currentFrame = startFrameToCut;
+            endFrameToPlay = endFrameToCut;
+            firstFrameLabel.setText(String.valueOf(startFrameToCut));
+            lastFrameLabel.setText(String.valueOf(endFrameToCut));
+
+        }
+
+    }
+
     /**
      * Draws specified skeleton from skeletonInAllFrames ArrayList to motion player.
      * 
+     * @version 1.0
+     * @since 1.0
      */
     private void drawSkeleton() {
 
@@ -1353,6 +1462,10 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      *     |           |
      *  o__o           o__o         18 (right foot), 16 (right ankle), 17 (left ankle), 19 (left foot)
      * 
+     * 
+     * @param cleanedSkeleton is true if filtered motion is selected
+     * @version 1.0
+     * @since 1.0
      */
     private void createSkeletonInAllFrames(boolean cleanedSkeleton) {
 
@@ -1474,6 +1587,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * 
      * @param positions is the TreeMap with axis to be parsed
      * @param seriesName is the name for XYSeries
+     * @version 1.0
+     * @since 1.0
      */
     private void getAxis(TreeMap<JointType, ArrayList<Float>> positions, String seriesName) {
 
@@ -1501,6 +1616,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * 
      * @param key is a JointType defined in entry
      * @param series is XYSeries with data filled
+     * @version 1.0
+     * @since 1.0
      */
     private void insertIntoDataset(JointType key, XYSeries series) {
 
@@ -1552,6 +1669,8 @@ public class MoTrackSmoother extends javax.swing.JFrame {
      * Adds all existing charts into ArrayList to loop easier.
      * 
      * @param charts is the ArrayList to use as a collection of charts
+     * @version 1.0
+     * @since 1.0
      */
     private void addAllChartsIntoArray(ArrayList<JFreeChart> charts) {
 
@@ -1581,6 +1700,9 @@ public class MoTrackSmoother extends javax.swing.JFrame {
     /**
      * Removes all XYSeries from all defined datasets. 
      * Used before updating charts, e.g.: user has imported a new file.
+     * 
+     * @version 1.0
+     * @since 1.0
      */
     private void removeAllSeriesFromDatasets() {
 
@@ -1610,6 +1732,9 @@ public class MoTrackSmoother extends javax.swing.JFrame {
     /**
      * Removes cleaned XYSeries from all defined datasets. 
      * Used when multiple filtering is called.
+     * 
+     * @version 1.0
+     * @since 1.0
      */
     private void removeCleanedSeriesFromDatasets() {
 
@@ -1638,6 +1763,12 @@ public class MoTrackSmoother extends javax.swing.JFrame {
 
     }
 
+    /**
+     * Sets colours for axes. It is called mostly, when the motion was filtered.
+     * 
+     * @version 1.0
+     * @since 1.0
+     */
     private void setColoursForAxes() {
 
         if (isFiltered) {
@@ -1702,6 +1833,7 @@ public class MoTrackSmoother extends javax.swing.JFrame {
     private javax.swing.JLabel endLabel;
     private javax.swing.JButton exportButton;
     private javax.swing.JButton filterButton;
+    private javax.swing.JLabel firstFrameLabel;
     private javax.swing.JLabel fromToLabel;
     private javax.swing.JPanel graphAnkleLeft;
     private javax.swing.JPanel graphAnkleRight;
@@ -1744,5 +1876,4 @@ public class MoTrackSmoother extends javax.swing.JFrame {
     private javax.swing.JLabel startLabel;
     private javax.swing.JButton stopButton;
     // End of variables declaration//GEN-END:variables
-
 }

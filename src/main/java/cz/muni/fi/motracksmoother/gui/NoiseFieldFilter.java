@@ -30,11 +30,11 @@ public class NoiseFieldFilter extends DocumentFilter {
         } else {
             // warn the user and don't allow the insert
         }
-        
+
     }
 
     private boolean test(String text) {
-        
+
         if (text.length() > 8) {
             return false;
         }
@@ -51,7 +51,7 @@ public class NoiseFieldFilter extends DocumentFilter {
         } catch (NumberFormatException e) {
             return false;
         }
-        
+
     }
 
     @Override
@@ -72,7 +72,7 @@ public class NoiseFieldFilter extends DocumentFilter {
 
     @Override
     public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
-        
+
         Document doc = fb.getDocument();
         StringBuilder sb = new StringBuilder();
         sb.append(doc.getText(0, doc.getLength()));
@@ -85,5 +85,4 @@ public class NoiseFieldFilter extends DocumentFilter {
         }
 
     }
-    
 }

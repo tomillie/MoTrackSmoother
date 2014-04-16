@@ -25,11 +25,11 @@ public class ExtensionFilter extends FileFilter {
     }
 
     public boolean accept(File file) {
-        
+
         if (file.isDirectory()) {
             return true;
         }
-        
+
         int count = extensions.length;
         String path = file.getAbsolutePath();
         for (int i = 0; i < count; i++) {
@@ -39,13 +39,12 @@ public class ExtensionFilter extends FileFilter {
                 return true;
             }
         }
-        
+
         return false;
-        
+
     }
 
     public String getDescription() {
         return (description == null ? extensions[0] : description);
     }
-    
 }

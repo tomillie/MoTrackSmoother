@@ -8,9 +8,9 @@ package cz.muni.fi.motracksmoother.misc;
  * @since 1.0
  */
 public enum JointType {
-    
-    HEAD, 
-    SHOULDERCENTER, 
+
+    HEAD,
+    SHOULDERCENTER,
     SHOULDERRIGHT,
     SHOULDERLEFT,
     ELBOWRIGHT,
@@ -29,5 +29,4 @@ public enum JointType {
     ANKLELEFT,
     FOOTRIGHT,
     FOOTLEFT
-    
 }

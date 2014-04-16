@@ -10,7 +10,7 @@ import cz.muni.fi.motracksmoother.Skeleton;
  * @since 1.0
  */
 public class Misc {
-    
+
     /**
      * Clear all attributes of given skeleton.
      * 
@@ -42,7 +42,7 @@ public class Misc {
         }
 
     }
-    
+
     /**
      * Converts JointType enum to CamelCased String.
      * 
@@ -52,8 +52,8 @@ public class Misc {
      * @since 1.0
      */
     public String jointTypeToCamelCase(JointType jointType) {
-        
-         if (jointType == JointType.HEAD) {
+
+        if (jointType == JointType.HEAD) {
             return "Head";
         } else if (jointType == JointType.SHOULDERCENTER) {
             return "ShoulderCenter";
@@ -94,9 +94,8 @@ public class Misc {
         } else if (jointType == JointType.FOOTLEFT) {
             return "FootLeft";
         }
-         
-         return null;
-        
+
+        return null;
+
     }
-    
 }

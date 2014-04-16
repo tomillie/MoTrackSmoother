@@ -33,5 +33,4 @@ public class InvalidFileSyntaxException extends Exception {
     public String getMessage() {
         return message;
     }
-    
 }

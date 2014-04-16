@@ -85,7 +85,7 @@ public class Skeleton {
     public void setzPositionsCleaned(TreeMap<JointType, ArrayList<Float>> zPositionsCleaned) {
         this.zPositionsCleaned = zPositionsCleaned;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -119,6 +119,5 @@ public class Skeleton {
             return false;
         }
         return true;
-    }  
-    
+    }
 }

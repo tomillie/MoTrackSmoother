@@ -52,7 +52,7 @@ public interface SkeletonManager {
      * @param skeleton is the entity to be filled up with parsed data
      * @param file is the file to read from
      * @throws InvalidFileSyntaxException if file structure does not suit requirements
-     * @version 1.0
+     * @version 1.1
      * @since 1.0
      */
     void getPositionsFromCSV(Skeleton skeleton, File file) throws InvalidFileSyntaxException;
@@ -153,7 +153,8 @@ public interface SkeletonManager {
      * Structure of output:
      * <pre>
      * {@code
-     *  Head,"0,7779385","0,9686465","2,232532","0,777445","0,9685029","2,232491" . . .
+     *  Head,Head,Head,ShoulderRight,ShoulderRight,ShoulderRight . . .
+     *  "0,7779385","0,9686465","2,232532","0,777445","0,9685029","2,232491" . . .
      *  . . .
      * }
      * </pre>
@@ -163,9 +164,8 @@ public interface SkeletonManager {
      * @param filteredMotion is true if filtered motion is going to be exported
      * @param start is first frame to use
      * @param end is last frame to use
-     * @version 1.0
+     * @version 1.1
      * @since 1.0
      */
     void createCSVOutput(Skeleton skeleton, File file, boolean filteredMotion, int start, int end);
-    
 }

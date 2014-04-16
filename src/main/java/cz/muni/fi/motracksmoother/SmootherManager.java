@@ -55,5 +55,4 @@ public interface SmootherManager {
      * @since 1.0
      */
     void kalman(Skeleton skeleton, double measurementNoiseCovariance);
-    
 }
