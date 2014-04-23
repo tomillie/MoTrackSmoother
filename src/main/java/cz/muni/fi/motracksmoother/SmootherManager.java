@@ -21,9 +21,9 @@ public interface SmootherManager {
     /**
      * Prediction phase of Kalman filtering.
      * <pre>
-     * \hat{x}_{k}^{\scalebox{0.9}{ -}} = A\hat{x}_{k - 1} + Bu_{k - 1} 
+     * \hat{x}_{k}^{-} = A\hat{x}_{k - 1} + Bu_{k - 1} 
      * 
-     * P_{k}^{\scalebox{0.9}{ -}} = AP_{k - 1}A^{T} + Q 
+     * P_{k}^{-} = AP_{k - 1}A^{T} + Q 
      * </pre>
      * 
      * @version 1.0
@@ -35,11 +35,11 @@ public interface SmootherManager {
      * Correction phase of Kalman filtering.
      * 
      * <pre>
-     * K_{k} =  P_{k}^{\scalebox{0.9}{ -}}H^{T}(HP_{k}^{\scalebox{0.9}{ -}}H^{T} + R)^{-1}
+     * K_{k} =  P_{k}^{-}H^{T}(HP_{k}^{-}H^{T} + R)^{-1}
      * 
-     * \hat{x}_{k} = x_{k}^{\scalebox{0.9}{ -}} + K_{k}(z_{k} - H\hat{x}_{k}^{\scalebox{0.9}{ -}}) 
+     * \hat{x}_{k} = x_{k}^{-} + K_{k}(z_{k} - H\hat{x}_{k}^{-}) 
      * 
-     * P_{k} = (1 - K_{k}H)P_{k}^{\scalebox{0.9}{ -}} 
+     * P_{k} = (1 - K_{k}H)P_{k}^{-} 
      * </pre>
      * 
      * @param z is measured value, which is going to be filtered
